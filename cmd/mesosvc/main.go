@@ -1,8 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"net/http"
+
 	inmem "github.com/meso-org/meso/inmemorydb"
 	repo "github.com/meso-org/meso/repository"
+	server "github.com/meso-org/meso/server"
 	workers "github.com/meso-org/meso/workers"
 )
 
@@ -24,5 +28,10 @@ func main() {
 	}
 
 	// Service Registration here
-	workersService := workers.NewService(workersRepo)
+	var workersSVC workers.Service
+	workersSVC = workers.NewService(workersRepo)
+
+	srv := server.New(workersSVC)
+	fmt.Println("bout to serve")
+	http.ListenAndServe(":4444", srv)
 }
