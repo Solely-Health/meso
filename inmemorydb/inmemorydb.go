@@ -30,6 +30,17 @@ func (r *workerRepository) Find(id repository.WorkerID) (*repository.Worker, err
 	return worker, nil
 }
 
+func (r *workerRepository) FindAll() ([]*repository.Worker, error) {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	workers := []*repository.Worker{}
+	for _, worker := range r.workers {
+		workers = append(workers, worker)
+	}
+
+	return workers, nil
+}
+
 // NewWorkerRepository returns a new instance of a in-memory cargo repository.
 func NewWorkerRepository() repository.WorkerRepository {
 	return &workerRepository{

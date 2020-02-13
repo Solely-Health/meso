@@ -9,6 +9,7 @@ type WorkerID string
 type WorkerRepository interface {
 	Store(worker *Worker) error
 	Find(id WorkerID) (*Worker, error)
+	FindAll() ([]*Worker, error)
 }
 
 // Domain object

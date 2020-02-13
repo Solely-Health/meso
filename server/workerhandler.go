@@ -111,5 +111,18 @@ func (h *workerHandler) findWorker(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *workerHandler) listWorkers(w http.ResponseWriter, r *http.Request) {
-
+	var err error
+	var response struct {
+		Workers []*repository.Worker `json:"workers"`
+	}
+	response.Workers, err = h.s.FindAllWorkers()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }

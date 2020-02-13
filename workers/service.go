@@ -8,6 +8,7 @@ import (
 type Service interface {
 	RegisterNewWorker(email, firstName, lastName, occupation, license string) (repository.WorkerID, error)
 	FindWorkerByID(repository.WorkerID) (*repository.Worker, error)
+	FindAllWorkers() ([]*repository.Worker, error)
 }
 
 type service struct {
@@ -46,6 +47,15 @@ func (s *service) FindWorkerByID(id repository.WorkerID) (*repository.Worker, er
 	}
 
 	return worker, nil
+}
+
+// FindAllWorkers - return all workers, we can add ability to find all workers by their location, etc, etc
+func (s *service) FindAllWorkers() ([]*repository.Worker, error) {
+	workers, err := s.workers.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	return workers, err
 }
 
 // NewService - pass this function a repository instance,
