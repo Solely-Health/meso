@@ -18,6 +18,7 @@ func (mockWorker *mockWorkersRepository) Store(worker *repository.Worker) error 
 func TestRegisterNewWorker(t *testing.T) {
 	// create mock variables
 	var (
+		email      = "mcnultymikkal@gmail.com"
 		firstName  = "Mike"
 		lastName   = "McNut"
 		occupation = "Respitory Therapist"
@@ -26,7 +27,7 @@ func TestRegisterNewWorker(t *testing.T) {
 	var workers mockWorkersRepository
 
 	s := NewService(&workers)
-	id, err := s.RegisterNewWorker(firstName, lastName, occupation, license)
+	id, err := s.RegisterNewWorker(email, firstName, lastName, occupation, license)
 	if err != nil {
 		t.Fatal(err)
 	}

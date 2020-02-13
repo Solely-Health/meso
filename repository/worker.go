@@ -13,6 +13,7 @@ type WorkerRepository interface {
 // Domain object
 type Worker struct {
 	WorkerID  WorkerID
+	Email     string
 	FirstName string
 	LastName  string
 	// TODO make this a constant enum
@@ -22,10 +23,11 @@ type Worker struct {
 }
 
 // NewWorker - generate a new worker domain object with provided fields
-func NewWorker(workerID WorkerID, firstName, lastName, occupation, license string) *Worker {
+func NewWorker(workerID WorkerID, email, firstName, lastName, occupation, license string) *Worker {
 
 	return &Worker{
 		WorkerID:   workerID,
+		Email:      email,
 		FirstName:  firstName,
 		LastName:   lastName,
 		Occupation: occupation,

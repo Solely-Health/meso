@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -48,6 +49,19 @@ func (h *workerHandler) testPing(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *workerHandler) registerWorker(w http.ResponseWriter, r *http.Request) {
+	// ctx := context.Background()
+	// r.ParseForm()
+	// fmt.Println("checking the form from r.PrintForm() ", r.FormValue("test"))
+
+	var request struct {
+		Test string `json:"test"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		fmt.Printf("unable to decode json: %v", err)
+	}
+
+	fmt.Println("heres the request string ", request.Test)
 
 }
 

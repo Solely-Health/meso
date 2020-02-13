@@ -6,28 +6,29 @@ import (
 )
 
 type Service interface {
-	RegisterNewWorker(firstName, lastName, occupation, license string) (repository.WorkerID, error)
+	RegisterNewWorker(email, firstName, lastName, occupation, license string) (repository.WorkerID, error)
 }
 
 type service struct {
 	workers repository.WorkerRepository
 }
 
-func (s *service) RegisterNewWorker(firstName, lastName, occupation, license string) (repository.WorkerID, error) {
-	if firstName == "" || lastName == "" || occupation == "" {
+func (s *service) RegisterNewWorker(email, firstName, lastName, occupation, license string) (repository.WorkerID, error) {
+	// TODO Skills, range
+	// email, first name, last name, password, licenses,
+	if email == "" || firstName == "" || lastName == "" || occupation == "" {
 		return "", fmt.Errorf("in RegisterNewWorker, provided arguments are invalid")
 	}
 
 	workerID := repository.GenerateWorkerID()
 
-	worker := repository.NewWorker(workerID, firstName, lastName, occupation, license)
+	worker := repository.NewWorker(workerID, email, firstName, lastName, occupation, license)
 
 	if err := s.workers.Store(worker); err != nil {
 		return "", err
 	}
 
 	// we can trigger a "NewWorkerRegistered" to other services from here
-
 	return worker.WorkerID, nil
 }
 
