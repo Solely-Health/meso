@@ -10,6 +10,8 @@ import (
 )
 
 type Server struct {
+	// TODO: make this an array that itterates through different service references and pushes them to a service store
+	// we'll call this service registration or something
 	WorkersSVC workers.Service
 	router     chi.Router
 }
@@ -24,6 +26,7 @@ func New(ws workers.Service) *Server {
 
 	r.Use(accessControl)
 
+	// Register worker module related endpoints
 	r.Route("/worker", func(r chi.Router) {
 		h := workerHandler{s.WorkersSVC}
 		r.Mount("/v1", h.router())
