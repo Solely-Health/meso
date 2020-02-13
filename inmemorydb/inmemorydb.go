@@ -1,6 +1,7 @@
 package inmemorydb
 
 import (
+	"fmt"
 	repository "github.com/meso-org/meso/repository"
 	"sync"
 )
@@ -17,6 +18,16 @@ func (r *workerRepository) Store(w *repository.Worker) error {
 	defer r.mtx.Unlock()
 	r.workers[w.WorkerID] = w
 	return nil
+}
+
+func (r *workerRepository) Find(id repository.WorkerID) (*repository.Worker, error) {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	worker := r.workers[id]
+	if worker == nil {
+		return worker, fmt.Errorf("Could not find worker by id: %v", id)
+	}
+	return worker, nil
 }
 
 // NewWorkerRepository returns a new instance of a in-memory cargo repository.

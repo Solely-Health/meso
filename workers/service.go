@@ -7,6 +7,7 @@ import (
 
 type Service interface {
 	RegisterNewWorker(email, firstName, lastName, occupation, license string) (repository.WorkerID, error)
+	FindWorkerByID(repository.WorkerID) (*repository.Worker, error)
 }
 
 type service struct {
@@ -30,6 +31,21 @@ func (s *service) RegisterNewWorker(email, firstName, lastName, occupation, lice
 
 	// we can trigger a "NewWorkerRegistered" to other services from here
 	return worker.WorkerID, nil
+}
+
+func (s *service) FindWorkerByID(id repository.WorkerID) (*repository.Worker, error) {
+	// var err error
+	w := repository.Worker{}
+	if id == "" {
+		return &w, fmt.Errorf("Bad request for FindWorkerById, missing id")
+	}
+
+	worker, err := s.workers.Find(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return worker, nil
 }
 
 // NewService - pass this function a repository instance,
