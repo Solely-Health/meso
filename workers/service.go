@@ -2,6 +2,7 @@ package workers
 
 import (
 	"fmt"
+
 	"github.com/meso-org/meso/repository"
 )
 
@@ -35,7 +36,6 @@ func (s *service) RegisterNewWorker(email, firstName, lastName, occupation, lice
 }
 
 func (s *service) FindWorkerByID(id repository.WorkerID) (*repository.Worker, error) {
-	// var err error
 	w := repository.Worker{}
 	if id == "" {
 		return &w, fmt.Errorf("Bad request for FindWorkerById, missing id")

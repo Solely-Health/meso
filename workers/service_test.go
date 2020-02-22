@@ -14,7 +14,12 @@ func (mockWorker *mockWorkersRepository) Store(worker *repository.Worker) error 
 	mockWorker.worker = worker
 	return nil
 }
-
+func (mockWorker *mockWorkersRepository) Find(worker repository.WorkerID) (*repository.Worker, error) {
+	return nil, nil
+}
+func (mockWorker *mockWorkersRepository) FindAll() ([]*repository.Worker, error) {
+	return nil, nil
+}
 func TestRegisterNewWorker(t *testing.T) {
 	// create mock variables
 	var (
