@@ -2,8 +2,9 @@ package inmemorydb
 
 import (
 	"fmt"
-	repository "github.com/meso-org/meso/repository"
 	"sync"
+
+	repository "github.com/meso-org/meso/repository"
 )
 
 type workerRepository struct {
@@ -46,4 +47,19 @@ func NewWorkerRepository() repository.WorkerRepository {
 	return &workerRepository{
 		workers: make(map[repository.WorkerID]*repository.Worker),
 	}
+}
+
+//  ---------------- //
+type facilityRepository struct {
+	mtx        sync.RWMutex
+	facilities map[repository.FacilityID]*repository.Facility
+}
+
+// Store - A instance of the Store() definition in the repository interface
+// Locates a worker via WorkerID in the workers map
+func (r *facilityRepository) Store(f *repository.Facility) error {
+	r.mtx.Lock()
+	defer r.mtx.Unlock()
+	r.facilities[f.FacilityID] = f
+	return nil
 }

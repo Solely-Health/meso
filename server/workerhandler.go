@@ -19,6 +19,8 @@ func (h *workerHandler) router() chi.Router {
 	r := chi.NewRouter()
 
 	r.Route("/worker", func(chi.Router) {
+		// TODO: this is a dummy login handler for later
+		// r.Post("/login", h.loginWorker)
 		r.Post("/", h.registerWorker)
 		r.Get("/", h.listWorkers)
 		r.Route("/{workerID}", func(r chi.Router) {
