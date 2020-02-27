@@ -14,7 +14,7 @@ func (mockWorker *mockWorkersRepository) Store(worker *repository.Worker) error 
 	mockWorker.worker = worker
 	return nil
 }
-func (mockWorker *mockWorkersRepository) Find(worker repository.WorkerID) (*repository.Worker, error) {
+func (mockWorker *mockWorkersRepository) Find(x interface{}) (*repository.Worker, error) {
 	return nil, nil
 }
 func (mockWorker *mockWorkersRepository) FindAll() ([]*repository.Worker, error) {
