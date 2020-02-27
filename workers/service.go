@@ -8,6 +8,7 @@ import (
 
 type Service interface {
 	RegisterNewWorker(email, firstName, lastName, occupation, license string) (repository.WorkerID, error)
+	FindWorkerByEmail(repository.Email) (*repository.Worker, error)
 	FindWorkerByID(repository.WorkerID) (*repository.Worker, error)
 	FindAllWorkers() ([]*repository.Worker, error)
 }
@@ -25,14 +26,29 @@ func (s *service) RegisterNewWorker(email, firstName, lastName, occupation, lice
 
 	workerID := repository.GenerateWorkerID()
 
-	worker := repository.NewWorker(workerID, email, firstName, lastName, occupation, license)
+	parsedEmail := repository.Email(email)
 
+	worker := repository.NewWorker(workerID, parsedEmail, firstName, lastName, occupation, license)
 	if err := s.workers.Store(worker); err != nil {
 		return "", err
 	}
 
 	// we can trigger a "NewWorkerRegistered" to other services from here
 	return worker.WorkerID, nil
+}
+
+func (s *service) FindWorkerByEmail(email repository.Email) (*repository.Worker, error) {
+	w := repository.Worker{}
+	if email == "" {
+		return &w, fmt.Errorf("Bad request for FindWorkerByEmail, missing email")
+	}
+
+	worker, err := s.workers.Find(email)
+	if err != nil {
+		return nil, err
+	}
+
+	return worker, nil
 }
 
 func (s *service) FindWorkerByID(id repository.WorkerID) (*repository.Worker, error) {
