@@ -4,3 +4,6 @@
 [submodule "meso-ui"]
 	path = meso-ui
 	url = https://github.com/meso-org/meso-ui.git
+[submodule "meso-service"]
+	path = meso-service
+	url = https://github.com/meso-org/meso-service.git
