@@ -1,0 +1,25 @@
+
+version: '3'
+services:
+  licensesvc:
+    container_name: license-service
+    build: ./meso-license-service/.
+    ports: 
+      - 8080:8080 
+    restart: on-failure         
+    networks:
+      - weso
+  meso:
+    container_name: meso
+    build: ./meso/.
+    ports:
+      - 4040:4040
+    restart: on-failure
+    networks: 
+      - weso
+volumes:
+  api:
+# Networks to be created to facilitate communication between containers
+networks:
+  weso:
+    driver: bridge
