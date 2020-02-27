@@ -19,6 +19,8 @@ func (h *workerHandler) router() chi.Router {
 	r := chi.NewRouter()
 
 	r.Route("/worker", func(chi.Router) {
+		// TODO: this is a dummy login handler for later
+		r.Post("/login", h.loginWorker)
 		r.Post("/", h.registerWorker)
 		r.Get("/", h.listWorkers)
 		r.Route("/{workerID}", func(r chi.Router) {
@@ -49,6 +51,41 @@ func (h *workerHandler) testPing(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		encodeError(ctx, err, w)
 		return
+	}
+}
+
+func (h *workerHandler) loginWorker(w http.ResponseWriter, r *http.Request) {
+	var err error
+
+	var request struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	var response struct {
+		User  *repository.Worker `json:"worker"`
+		Token string             `json:"token"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		fmt.Printf("unable to decode json: %v", err)
+	}
+
+	parsedEmail := repository.Email(request.Email)
+
+	response.User, err = h.s.FindWorkerByEmail(parsedEmail)
+	if err != nil {
+		fmt.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if response.User.Email == parsedEmail {
+		response.Token = "FAKEOAUTHTOKEN1234567890"
+		if err := json.NewEncoder(w).Encode(response); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
