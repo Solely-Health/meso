@@ -1,0 +1,3 @@
+[submodule "meso-license-service"]
+	path = meso-license-service
+	url = https://github.com/meso-org/meso-license-service.git
