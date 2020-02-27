@@ -33,5 +33,5 @@ func main() {
 
 	srv := server.New(workersSVC)
 	fmt.Println("bout to serve")
-	http.ListenAndServe(":4444", srv)
+	http.ListenAndServe(":4040", srv)
 }
