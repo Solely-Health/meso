@@ -11,7 +11,7 @@ services:
       - weso
   meso:
     container_name: meso
-    build: ./meso/.
+    build: ./meso-service/.
     ports:
       - 4040:4040
     restart: on-failure
