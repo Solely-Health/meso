@@ -5,7 +5,7 @@ services:
     container_name: license-service
     build: ./meso-license-service/.
     ports: 
-      - 8080:8080 
+      - 6060:6060 
     restart: on-failure         
     networks:
       - weso
